@@ -94,17 +94,17 @@ function validateOrderUser(data) {
   const {name, tel, email, address, payment} = data;
   const errors = [];
 
-  if (name === '') errors.push('姓名為空');
+  if (name.trim() === '') errors.push('姓名為空');
   
   const regex = /^09\d{8}$/;
-  if (!regex.test(tel)) errors.push('電話格式不正確');
+  if (!regex.test(tel.trim())) errors.push('電話格式不正確');
 
   if (!email.includes('@')) errors.push('Email 無 @');
 
-  if (address === '') errors.push('地址為空');
+  if (address.trim() === '') errors.push('地址為空');
 
   const payments = ['ATM', 'Credit Card', 'Apple Pay'];
-  if (!payments.includes(payment)) errors.push('付款方式不在允許清單');
+  if (!payments.includes(payment.trim())) errors.push('付款方式不在允許清單');
   
   return {isValid: errors.length === 0, errors};
 }
@@ -221,8 +221,8 @@ const OrderService = {
    */
   async fetchOrders() {
     // 請實作此函式
-    const response = await axios.get(`${BASE_URL}/api/livejs/v1/admin/${API_PATH}/orders`, 
-      {headers: {authorization: ADMIN_TOKEN}});
+    const response = await axios.get(`${this.baseURL}/api/livejs/v1/admin/${this.apiPath}/orders`, 
+      {headers: {authorization: this.token}});
     return response.data.orders;
   },
 
